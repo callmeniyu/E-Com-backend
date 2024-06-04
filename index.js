@@ -5,6 +5,7 @@ import multer from "multer"
 import path from "path"
 import cors from "cors"
 import bodyParser from "body-parser"
+import dotenv from "dotenv"
 
 const port = 4000
 const app = express()
@@ -12,14 +13,8 @@ const app = express()
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cors())
+dotenv.config()
 
-app.use(
-    cors({
-        origin: ["https://e-commerce-mern-frontend-sand.vercel.app"],
-        methods: ["POST", "GET"],
-        credentials: true,
-    })
-)
 
 // CONNECT MONGODB USING ATLAS
 mongoose
