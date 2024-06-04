@@ -15,10 +15,8 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cors())
 dotenv.config()
 
-
-// CONNECT MONGODB USING ATLAS
 mongoose
-    .connect("mongodb+srv://786niyasniya:U3TgS3FpaJQIEt5i@e-commerce.sboujmu.mongodb.net/E-commerce")
+    .connect(process.env.MONGO_URL)
     .then(console.log("Succesfully connected to DB"))
     .catch((err) => console.log(err))
 
@@ -132,7 +130,7 @@ app.post("/signup", async (req, res) => {
                 id: user.id,
             },
         }
-        const token = jwt.sign(data, "secret_ecom")
+        const token = jwt.sign(data, process.env.JWT_SECRET)
         res.json({ success: true, token })
     } catch (error) {
         console.log(error)
@@ -151,7 +149,7 @@ app.post("/login", async (req, res) => {
                         id: user.id,
                     },
                 }
-                const token = jwt.sign(data, "secret_ecom")
+                const token = jwt.sign(data, process.env.JWT_SECRET)
                 res.json({ success: true, token })
             } else {
                 res.json({ success: false, error: "Incorrect password" })
@@ -250,7 +248,7 @@ const fetchUser = async (req, res, next) => {
         res.status(401).send({ error: "please authenticate user" })
     } else {
         try {
-            const data = jwt.verify(token, "secret_ecom")
+            const data = jwt.verify(token, process.env.JWT_SECRET)
             req.user = data.user
             next()
         } catch (error) {
